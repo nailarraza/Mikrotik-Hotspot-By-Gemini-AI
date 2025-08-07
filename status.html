@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <title>Status - Gopo Network</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Placeholder untuk Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Konten Utama -->
+    <main class="main-container">
+        <div class="form-wrapper blurred-card font-size: 3rem;">
+            <h2>Status Koneksi</h2>
+
+            <p id="welcome-message">Selamat datang, <strong>$(username)</strong>!</p>
+
+            <table class="status-table font-size: 2rem; margin-bottom: 1rem;">
+                <tbody>
+                    <tr>
+                        <td>Alamat IP</td>
+                        <td id="status-ip">$(ip)</td>
+                    </tr>
+                    <tr>
+                        <td>Alamat MAC</td>
+                        <td id="status-mac">$(mac)</td>
+                    </tr>
+                    <tr>
+                        <td>Data Diterima</td>
+                        <td id="status-bytes-out">$(bytes-out-nice)</td>
+                    </tr>
+                    <tr>
+                        <td>Data Terkirim</td>
+                        <td id="status-bytes-in">$(bytes-in-nice)</td>
+                    </tr>
+                    <tr>
+                        <td>Durasi Koneksi</td>
+                        <td id="status-uptime">$(uptime)</td>
+                    </tr>
+                    $(if session-time-left)
+                    <tr>
+                        <td>Sisa Waktu</td>
+                        <td id="status-time-left">$(session-time-left)</td>
+                    </tr>
+                    $(endif)
+                    $(if remain-bytes-total)
+                    <tr>
+                        <td>Sisa Kuota</td>
+                        <td id="status-quota-left">$(remain-bytes-total-nice)</td>
+                    </tr>
+                    $(endif)
+                </tbody>
+            </table>
+
+            <form name="logout" action="$(link-logout)" method="post" style="margin-top: 1.5rem;">
+                <br>
+                <button type="submit" class="btn btn-primary btn-full" style="box-sizing: border-box;">Logout</button>
+            </form>
+            <br><br>
+            <img src="img/mikrotik_logo.png" alt="MikroTik Logo" class="form-logo">
+        </div>
+    </main>
+
+    <!-- Placeholder untuk Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Placeholder untuk Modal -->
+    <div id="modal-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+        // Logika untuk menampilkan pesan trial berdasarkan format username
+        (function() {
+            var username = "$(username)";
+            // Cek apakah username diawali dengan "T-" yang menandakan akun trial
+            if (username.startsWith('T-')) {
+                // Buat elemen div untuk pesan alert
+                var trialAlert = document.createElement('div');
+                trialAlert.className = 'alert alert-info';
+                trialAlert.style.marginBottom = '1.5rem';
+                trialAlert.innerHTML = 'Anda sedang menggunakan akun tamu (trial). Nikmati akses internet gratis selama durasi yang ditentukan.';
+
+                // Temukan elemen paragraf selamat datang untuk menyisipkan pesan setelahnya
+                var welcomeMessage = document.getElementById('welcome-message');
+                if (welcomeMessage) {
+                    welcomeMessage.parentNode.insertBefore(trialAlert, welcomeMessage.nextSibling);
+                }
+            }
+        })();
+    </script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi untuk memperbarui data status secara live
+            async function updateStatus() {
+                try {
+                    // Gunakan variabel $(link-status) dari MikroTik untuk URL yang benar
+                    const response = await fetch('$(link-status)');
+                    if (!response.ok) {
+                        console.error('Gagal mengambil data status:', response.statusText);
+                        return;
+                    }
+                    const htmlText = await response.text();
+
+                    // Gunakan DOMParser untuk mengubah teks HTML menjadi dokumen DOM sementara
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+
+                    // Fungsi bantuan untuk memperbarui elemen jika ada dan isinya berbeda
+                    const updateElement = (id, newDoc) => {
+                        const oldElement = document.getElementById(id);
+                        const newElement = newDoc.getElementById(id);
+                        if (oldElement && newElement && oldElement.textContent !== newElement.textContent) {
+                            oldElement.textContent = newElement.textContent;
+                        }
+                    };
+
+                    // Perbarui semua data di tabel
+                    updateElement('status-bytes-out', doc);
+                    updateElement('status-bytes-in', doc);
+                    updateElement('status-uptime', doc);
+                    updateElement('status-time-left', doc);
+                    updateElement('status-quota-left', doc);
+
+                } catch (error) {
+                    console.error('Terjadi kesalahan saat memperbarui status:', error);
+                }
+            }
+
+            // Panggil fungsi updateStatus setiap 5 detik (5000 milidetik) untuk nuansa "live".
+            // Anda bisa mengubah interval ini, misal menjadi 60000 untuk refresh setiap 60 detik.
+            setInterval(updateStatus, 1000);
+        });
+    </script>
+</body>
+</html>

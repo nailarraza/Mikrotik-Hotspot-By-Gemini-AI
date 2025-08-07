@@ -1,0 +1,395 @@
+/*
+  File CSS ini dihasilkan berdasarkan desain Tailwind CSS.
+  Anda tidak perlu menginstal atau mengonfigurasi Tailwind.
+  Cukup gunakan kelas-kelas yang sesuai di HTML Anda.
+*/
+
+/* Import Font Lato */
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Variabel Warna & Dasar */
+:root {
+    --color-primary: #8b5cf6; /* ungu-500 */
+    --color-primary-dark: #7c3aed; /* ungu-600 */
+    --color-primary-light: #a78bfa; /* ungu-400 */
+    --text-light: #f3f4f6; /* gray-100 */
+    --text-dark: #1f2937; /* gray-800 */
+    --bg-light: #ffffff;
+    --bg-dark: #111827; /* gray-900 */
+    --card-bg-light: rgba(255, 255, 255, 0.6);
+    --card-bg-dark: rgba(31, 41, 55, 0.6); /* gray-800 with opacity */
+    --blur-intensity: 8px; /* Kurangi nilai ini untuk mengurangi efek blur (misal: 8px, 6px, 4px) */
+}
+
+/* Aturan Dasar & Latar Belakang */
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    background-image: url('../img/background.jpg');
+    /* Ukuran default untuk desktop/tablet */
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Tambahkan transisi untuk background agar lebih mulus saat resize */
+    transition: background-color 0.3s, color 0.3s, background-size 0.5s ease, background-position 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Aturan responsif untuk latar belakang di perangkat mobile/potrait */
+@media (max-width: 768px) {
+    body {
+        background-size: 450%; /* Perbesar gambar */
+        background-position: center 30%; /* Geser fokus vertikal sedikit ke atas */
+    }
+}
+
+/* Aturan Mode Gelap */
+html.dark body {
+    color: var(--text-light);
+    background-color: var(--bg-dark);
+}
+
+/* Kontainer Utama */
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 1rem 5rem 1rem; /* Padding atas untuk navbar, bawah untuk footer */
+}
+
+/* Komponen dengan Efek Blur (Form, Navbar, Footer) */
+.blurred-card {
+    background-color: var(--card-bg-light);
+    backdrop-filter: blur(var(--blur-intensity));
+    -webkit-backdrop-filter: blur(var(--blur-intensity));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem; /* rounded-xl */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+html.dark .blurred-card {
+    background-color: var(--card-bg-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    padding: 1rem 2rem;
+    width: auto; /* Dihitung otomatis berdasarkan left/right */
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Penambahan untuk struktur navbar 3 kolom */
+.navbar-section {
+    display: flex;
+    align-items: center;
+    flex-basis: 33.33%; /* Memberi basis lebar yang sama untuk setiap bagian */
+}
+
+.navbar-left {
+    justify-content: flex-start;
+}
+
+.navbar-center {
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    transition: color 0.3s;
+}
+
+html.dark .navbar-center {
+    color: var(--text-light);
+}
+
+.navbar-right {
+    justify-content: flex-end;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-dark);
+    font-weight: bold;
+    font-size: 1.25rem;
+    text-decoration: none;
+}
+
+html.dark .navbar-brand {
+    color: var(--text-light);
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    padding: 0.75rem 2rem;
+    width: auto; /* Dihitung otomatis berdasarkan left/right */
+    z-index: 50;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* Form Login & Status */
+.form-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.form-logo {
+    width: 250px;
+    height: auto;
+    margin: 0 auto 1.5rem auto;
+}
+
+.form-wrapper h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem; /* rounded-lg */
+    border: 1px solid rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--text-dark);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+html.dark .form-input {
+    background-color: rgba(75, 85, 99, 0.7); /* gray-600 with opacity */
+    color: var(--text-light);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+/* Tombol */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: #6b7280; /* gray-500 */
+    color: white;
+}
+.btn-secondary:hover {
+    background-color: #4b5563; /* gray-600 */
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-trial {
+    background-color: #10b981; /* emerald-500 */
+    color: white;
+}
+.btn-trial:hover {
+    background-color: #059669; /* emerald-600 */
+}
+
+/* Tombol Navigasi (About, Dark Mode) */
+.nav-btn {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--text-dark);
+    padding: 0.5rem;
+    border-radius: 9999px; /* rounded-full */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+html.dark .nav-btn {
+    color: var(--text-light);
+}
+
+.nav-btn:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+html.dark .nav-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Tabel Status */
+.status-table {
+    width: 100%;
+    margin-top: 1.5rem;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.status-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+html.dark .status-table td {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.status-table td:first-child {
+    font-weight: bold;
+    width: 40%;
+}
+
+/* Notifikasi / Alert */
+.alert {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.alert-danger {
+    background-color: #fecaca; /* red-200 */
+    color: #b91c1c; /* red-700 */
+    border: 1px solid #f87171; /* red-400 */
+}
+
+.alert-success {
+    background-color: #d1fae5; /* green-200 */
+    color: #065f46; /* green-800 */
+    border: 1px solid #6ee7b7; /* green-400 */
+}
+
+.alert-warning {
+    background-color: #fef3c7; /* amber-200 */
+    color: #92400e; /* amber-700 */
+    border: 1px solid #fcd34d; /* amber-400 */
+}
+
+.alert-info {
+    background-color: #dbeafe; /* blue-200 */
+    color: #1e40af; /* blue-800 */
+    border: 1px solid #93c5fd; /* blue-400 */
+}
+
+/* Popup / Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+html.dark .modal-close-btn {
+    color: var(--text-light);
+}
+
+.modal-video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}

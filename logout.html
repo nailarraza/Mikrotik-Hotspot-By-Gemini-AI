@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <title>Logout - Gopo Network</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Placeholder untuk Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Konten Utama -->
+    <main class="main-container">
+        <div class="form-wrapper blurred-card">
+            <div class="alert alert-danger">
+                Anda telah berhasil keluar dari sesi ini.
+            </div>
+            <br><br>
+            <p style="margin-top: 2rem;">
+                Total durasi koneksi: $(uptime).<br>
+                Total data terpakai: $(bytes-in-nice) / $(bytes-out-nice).
+            </p>
+            <br>
+            <a href="$(link-login)" class="btn btn-primary btn-full" style="margin-top: 1rem; box-sizing: border-box;">Login Kembali</a>
+
+            <br><br><br>
+            <img src="img/mikrotik_logo.png" alt="MikroTik Logo" class="form-logo">
+        </div>
+    </main>
+    
+
+    <!-- Placeholder untuk Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

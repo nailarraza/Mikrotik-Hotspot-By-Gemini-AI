@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <title>Login - Gopo Network </title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+     <!-- Placeholder untuk Navbar -->
+    <div id="navbar-placeholder"></div>
+    
+    <!-- Konten Utama -->
+    <main class="main-container">
+        <div class="form-wrapper blurred-card">
+            <div class="alert alert-warning" style="text-align: center; font-size: 1rem;">
+                <p>IPv4 perangkat Anda adalah : <b>$(ip)</b></p>
+            </div>
+            <br>
+            <h2>Login Pengguna</h2>
+            <br>
+            <!-- Menampilkan pesan error jika ada (posisi lebih baik) -->
+            $(if error)
+            <div class="alert alert-danger"><strong>Login Gagal:</strong> $(error)</div>
+            $(endif)
+            <br>
+
+            <form name="login" action="$(link-login-only)" method="post" $(if chap-id) onSubmit="return doLogin()" $(endif)>
+                <input type="hidden" name="dst" value="$(link-orig)">
+                <input type="hidden" name="popup" value="true">
+
+                <input class="form-input" name="username" type="text" placeholder="Username" required>  <!-- Hapus value -->
+                
+                <!-- Grup Input Password dengan Ikon Mata -->
+                <div style="position: relative; margin-bottom: 1rem;">
+                    <input id="password" class="form-input" name="password" type="password" placeholder="Password" style="padding-right: 3rem; margin-bottom: 0;">
+                    <button type="button" id="togglePassword" style="position: absolute; top: 50%; right: 0.75rem; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: #6b7280;">
+                        <!-- Ikon Mata (Tampil) -->
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="display: block;">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                        <!-- Ikon Mata Coret (Sembunyi) -->
+                        <svg id="eyeSlashIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="display: none;">
+                            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            $(if trial == 'yes')
+            <br>
+            <p>ATAU</p>
+            <a href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)" class="btn btn-trial btn-full block mt-4" style="margin-top: 1rem; box-sizing: border-box;">Login Tamu (Gratis 1 Jam)</a>
+            $(endif)
+            <br><br>
+            <p class="mt-6 text-base">
+                Belum punya akun? <a href="register.html" class="text-primary font-bold hover:underline">Registrasi disini</a>
+            </p>
+            <br><br><br>
+               <img src="img/mikrotik_logo.png" alt="MikroTik Logo" class="form-logo">
+               <br>
+        </div>
+    </main>
+
+    <!-- Placeholder untuk Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Placeholder untuk Modal -->
+    <div id="modal-placeholder"></div>
+
+    <!-- CHAP-ID (Diperlukan untuk beberapa metode otentikasi) -->
+    $(if chap-id)
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript">
+        // Fungsi ini diubah untuk menyesuaikan dengan cara kerja CHAP-MD5 MikroTik
+         function doLogin() {
+             var chapid = '$(chap-id)';
+             var chapchallenge = '$(chap-challenge)';
+             var password = document.login.password.value;
+ 
+             // Hitung hash MD5 sesuai dengan metode CHAP MikroTik dan kirimkan sebagai password
+             document.login.password.value = hex_md5(chapid + password + chapchallenge);
+             return true;
+         }
+    </script>
+    $(endif)
+
+    <script src="js/main.js"></script>
+
+    <!-- Skrip untuk fungsionalitas Tampilkan/Sembunyikan Password -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeSlashIcon = document.getElementById('eyeSlashIcon');
+
+            toggleButton.addEventListener('click', function () {
+                // Ganti tipe atribut input password
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Ganti ikon yang ditampilkan
+                if (type === 'password') {
+                    eyeIcon.style.display = 'block';
+                    eyeSlashIcon.style.display = 'none';
+                } else {
+                    eyeIcon.style.display = 'none';
+                    eyeSlashIcon.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
